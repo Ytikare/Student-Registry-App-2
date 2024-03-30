@@ -1,4 +1,4 @@
-node{
+pipeline{
     agent any
 
     stages{
@@ -9,13 +9,15 @@ node{
         }
         stage('Fix repo vulnerabilities') {
             steps {
-                def adutitResults = bat(script: 'npm audit --json', returnStdout: true).trim();
-                if (adutitResults.contains('moderate') | adutitResults.contains('high') | adutitResults.contains('low')){
-                    echo "Vulnerabilities found. Fixing..."
-                    bat 'npm audit fix'
-                }
-                else{
-                    echo "No vulnerabilities found."
+                script{
+                    def adutitResults = bat(script: 'npm audit --json', returnStdout: true).trim();
+                    if (adutitResults.contains('moderate') | adutitResults.contains('high') | adutitResults.contains('low')){
+                        echo "Vulnerabilities found. Fixing..."
+                        bat 'npm audit fix'
+                    }
+                    else{
+                        echo "No vulnerabilities found."
+                    }
                 }
             }
         }
@@ -25,7 +27,9 @@ node{
             }
         }
         stage('Deployment'){
-            echo "Deploying..."
+            steps{
+                echo "Deploying..."
+            }
         }
     }
 }
