@@ -9,7 +9,7 @@ pipeline{
         }
         stage('Fix repo vulnerabilities') {
             steps {
-                bat 'npm audit fix'
+                bat 'npm audit fix --force'
                 // script {
                 //     def adutitResults = bat(script: 'npm audit --json', returnStdout: true).trim()
                 //     if (!adutitResults.contains('moderate') || !adutitResults.contains('high') || !adutitResults.contains('low')){
