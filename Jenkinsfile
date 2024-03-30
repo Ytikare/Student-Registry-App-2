@@ -9,15 +9,16 @@ pipeline{
         }
         stage('Fix repo vulnerabilities') {
             steps {
-                script {
-                    def adutitResults = bat(script: 'npm audit --json', returnStdout: true).trim()
-                    if (!adutitResults.contains('moderate') || !adutitResults.contains('high') || !adutitResults.contains('low')){
-                        echo "Vulnerabilities found. Fixing..."
-                        bat 'npm audit fix'
-                    } else {
-                        echo "No vulnerabilities found."
-                    }
-                }
+                bat 'npm audit fix'
+                // script {
+                //     def adutitResults = bat(script: 'npm audit --json', returnStdout: true).trim()
+                //     if (!adutitResults.contains('moderate') || !adutitResults.contains('high') || !adutitResults.contains('low')){
+                //         echo "Vulnerabilities found. Fixing..."
+                //         bat 'npm audit fix'
+                //     } else {
+                //         echo "No vulnerabilities found."
+                //     }
+                // }
             }
         }
         stage('Run tests'){
