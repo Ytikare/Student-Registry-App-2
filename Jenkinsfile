@@ -9,13 +9,12 @@ pipeline{
         }
         stage('Fix repo vulnerabilities') {
             steps {
-                script{
+                script {
                     def adutitResults = bat(script: 'npm audit --json', returnStdout: true).trim();
-                    if (adutitResults.contains('moderate') | adutitResults.contains('high') | adutitResults.contains('low')){
+                    if (!adutitResults.contains('moderate') || !adutitResults.contains('high') || !adutitResults.contains('low')){
                         echo "Vulnerabilities found. Fixing..."
                         bat 'npm audit fix'
-                    }
-                    else{
+                    } else {
                         echo "No vulnerabilities found."
                     }
                 }
